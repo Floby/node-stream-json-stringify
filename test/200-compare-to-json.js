@@ -6,7 +6,10 @@ var stringify = require('..');
 
 describe('stringify', function () {
   describe('given null', compares(null));
-  describe('given a number', compares(8))
+  describe('given a number', compares(8));
+  describe('given a string', compares('Hello World'));
+  describe('given true', compares(true));
+  describe('given false', compares(false));
 });
 
 
