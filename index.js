@@ -16,5 +16,4 @@ function Stringify (subject) {
   if(subject.hasOwnProperty('toJSON')) {
     subject = subject.toJSON();
   }
-
 }
