@@ -13,6 +13,9 @@ describe('stringify', function () {
 
   describe('given an empty object', compares({}))
   describe('given an empty array', compares({}))
+  describe('given an array', function () {
+    describe('with numbers', compares([1, 2, 3]))
+  });
 });
 
 
