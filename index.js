@@ -26,12 +26,28 @@ function read (size) {
   var stringify = this;
   var iterator = stringify.iterator;
   var state = stringify.state;
-  var current = iterator();
-  if(current.type === 'object') {
-    stringify.push(JSON.stringify({}));
+  
+  var buffer = []
+  var current;
+  while (current = iterator()){
+    switch(current.type) {
+      case 'object':
+        buffer.push('{');
+        break;
+      case 'end-object':
+        buffer.push('}');
+        break;
+      case 'array':
+        buffer.push('[');
+        break;
+      case 'end-array':
+        buffer.push(']');
+        break;
+      default:
+        buffer.push(JSON.stringify(current.value))
+        break
+    }
   }
-  else {
-    stringify.push(JSON.stringify(current.value));
-  }
-  stringify.push();
+  stringify.push(buffer.join(''));
+  if(!current) stringify.push();
 }
