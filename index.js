@@ -56,6 +56,9 @@ function read (size) {
         toPush = ']'
         --state.nested;
         break;
+      case 'function':
+        current = iterator(); continue;
+        break;
       default:
         toPush = commaIfNeeded(state) + keyIfNeeded(state, current) + JSON.stringify(current.value);
         break

@@ -35,6 +35,8 @@ describe('stringify', function () {
       },
       good: 'bye'
     }))
+
+    describe('containing a function', compares({myFunction: function () {}}))
   })
 });
 
