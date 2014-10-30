@@ -7,6 +7,7 @@ module.exports = Stringify
 util.inherits(Stringify, stream.Readable);
 function Stringify (subject) {
   if(!(this instanceof Stringify)) return new Stringify(subject);
+  this._maxTicks = 2;
 
   stream.Readable.call(this);
 
@@ -29,6 +30,8 @@ function read (size) {
   var iterator = stringify.iterator;
   var state = stringify.state;
   var shouldPush, toPush, current;
+  var length = 0;
+  var ticksLeft = this._maxTicks;
   
   current = iterator();
   shouldPush = true;
@@ -54,13 +57,10 @@ function read (size) {
         toPush = commaIfNeeded(state) + JSON.stringify(current.value);
         break
     }
-    if(current.type !== 'array' && state.inArray && !state.firstInArray) {
-      toPush = ',' + toPush;
-    }
+    length += toPush.length;
     shouldPush = stringify.push(toPush);
-    if(current.type !== 'array' && state.inArray && state.firstInArray) {
-      state.firstInArray = false;
-    }
+    shouldPush = shouldPush && (length < size);
+    if(--ticksLeft === 0) break;
     current = iterator();
   }
   if(!current) stringify.push();
