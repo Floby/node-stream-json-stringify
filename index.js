@@ -13,7 +13,10 @@ function Stringify (subject) {
   if (typeof subject === 'undefined') {
     throw new Error('no object to stringify');
   }
-  this.state = {}
+  this.state = {
+    nested: 0,
+    first: {}
+  }
 
   if(subject && subject.toJSON) subject = subject.toJSON();
   this.iterator = iterator(subject);
@@ -33,23 +36,22 @@ function read (size) {
     toPush = null;
     switch(current.type) {
       case 'object':
-        toPush = '{'
+        toPush = '{';
         break;
       case 'end-object':
         toPush = '}';
         break;
       case 'array':
-        toPush = '['
-        state.inArray = true;
-        state.firstInArray = true;
+        toPush = commaIfNeeded(state) + '[';
+        ++state.nested;
+        state.first[state.nested] = true;
         break;
       case 'end-array':
         toPush = ']'
-        state.inArray = false;
-        state.firstInArray = false;
+        --state.nested;
         break;
       default:
-        toPush = JSON.stringify(current.value);
+        toPush = commaIfNeeded(state) + JSON.stringify(current.value);
         break
     }
     if(current.type !== 'array' && state.inArray && !state.firstInArray) {
@@ -62,4 +64,13 @@ function read (size) {
     current = iterator();
   }
   if(!current) stringify.push();
+}
+
+function commaIfNeeded (state) {
+  var toReturn = '';
+  if(state.nested && !state.first[state.nested]) {
+    toReturn = ',';
+  }
+  state.first[state.nested] = false;
+  return toReturn;
 }
