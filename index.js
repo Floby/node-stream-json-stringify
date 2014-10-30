@@ -22,7 +22,7 @@ function Stringify (subject) {
 
 function read (size) {
   var stringify = this;
-  var subject = stringify.iterator;
-  stringify.push('null');
+  var iterator = stringify.iterator;
+  stringify.push(JSON.stringify(iterator().value));
   stringify.push();
 }

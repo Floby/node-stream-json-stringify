@@ -5,18 +5,19 @@ var expect = require('chai').expect
 var stringify = require('..');
 
 describe('stringify', function () {
-  describe('given null', function () {
-    compares(null);
-  })
+  describe('given null', compares(null));
+  describe('given a number', compares(8))
 });
 
 
 function compares (subject) {
   var json = JSON.stringify(subject);
-  it('behaves the same as JSON.stringify', function (done) {
-    stringify(subject).pipe(sink()).on('data', function(data) {
-      expect(data).to.equal(json);
-      done();
+  return function describe () {
+    it('behaves the same as JSON.stringify', function (done) {
+      stringify(subject).pipe(sink()).on('data', function(data) {
+        expect(data).to.equal(json);
+        done();
+      });
     });
-  });
+  }
 }
