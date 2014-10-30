@@ -17,6 +17,7 @@ describe('stringify', function () {
     describe('with strings', compares(['a', 'b', 'c']))
     describe('with mixed scalar values', compares([true, null, 'ABCD', 89]))
     describe('containing another array', compares([true, [], 2]))
+    describe('containing another array as first item', compares([[true, 18], 2]))
   });
   describe('given an empty object', compares({}))
   describe('given an object', function () {
