@@ -1,0 +1,35 @@
+{
+  "name": "stream-json-stringify",
+  "version": "0.0.0",
+  "description": "JSON.stringify, streaming, non-blocking, for real this time.",
+  "main": "index.js",
+  "scripts": {
+    "test": "istanbul cover --print detail _mocha -- -R spec test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Floby/node-stream-json-stringify.git"
+  },
+  "keywords": [
+    "JSON",
+    "stringify",
+    "JSON.stringify",
+    "streaming",
+    "non-bocking",
+    "stream",
+    "stream2",
+    "stream3"
+  ],
+  "author": "Florent Jaby <florent.jaby@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Floby/node-stream-json-stringify/issues"
+  },
+  "homepage": "https://github.com/Floby/node-stream-json-stringify",
+  "devDependencies": {
+    "chai": "^1.9.2",
+    "istanbul": "^0.3.2",
+    "mocha": "^2.0.1",
+    "stream-sink": "^1.2.0"
+  }
+}
