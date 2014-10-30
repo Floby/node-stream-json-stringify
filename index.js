@@ -7,7 +7,7 @@ module.exports = Stringify
 util.inherits(Stringify, stream.Readable);
 function Stringify (subject) {
   if(!(this instanceof Stringify)) return new Stringify(subject);
-  this._maxTicks = 2;
+  this._maxTicks = 50;
 
   stream.Readable.call(this);
 
