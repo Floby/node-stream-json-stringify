@@ -1,5 +1,6 @@
 var stream = require('stream');
 var util = require('util');
+var iterator = require('object-iterator');
 
 module.exports = Stringify
 
@@ -9,11 +10,19 @@ function Stringify (subject) {
 
   stream.Readable.call(this);
 
-  if (!subject) {
+  if (typeof subject === 'undefined') {
     throw new Error('no object to stringify');
   }
 
-  if(subject.hasOwnProperty('toJSON')) {
-    subject = subject.toJSON();
-  }
+  if(subject && subject.toJSON) subject = subject.toJSON();
+  this.iterator = iterator(subject);
+
+  this._read = read;
+}
+
+function read (size) {
+  var stringify = this;
+  var subject = stringify.iterator;
+  stringify.push('null');
+  stringify.push();
 }

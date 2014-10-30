@@ -32,5 +32,9 @@
     "mocha": "^2.0.1",
     "sinon": "^1.11.1",
     "stream-sink": "^1.2.0"
+  },
+  "dependencies": {
+    "json-stringify-safe": "^5.0.0",
+    "object-iterator": "^0.2.1"
   }
 }
