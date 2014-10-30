@@ -21,7 +21,8 @@ describe('stringify', function () {
   describe('given an empty object', compares({}))
   describe('given an object', function () {
     describe('containing one key', compares({a: 'a'}))
-    describe('containing several keys', compares({a: 'AAA', b: 8, c: true}))
+    describe('containing several keys', compares({a: 'AAA', b: 8, c: true}));
+    describe('containing another object empty', compares({a: null, b: {}}));
   })
 });
 
