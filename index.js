@@ -14,7 +14,6 @@ function Stringify (subject) {
     throw new Error('no object to stringify');
   }
 
-  this.state = 'start';
 
   if(subject && subject.toJSON) subject = subject.toJSON();
   this.iterator = iterator(subject);
@@ -25,29 +24,31 @@ function Stringify (subject) {
 function read (size) {
   var stringify = this;
   var iterator = stringify.iterator;
-  var state = stringify.state;
+  var shouldPush, toPush, current;
   
-  var buffer = []
-  var current;
-  while (current = iterator()){
+  current = iterator();
+  shouldPush = true;
+  while (shouldPush && current) {
+    toPush = null;
     switch(current.type) {
       case 'object':
-        buffer.push('{');
+        toPush = '{'
         break;
       case 'end-object':
-        buffer.push('}');
+        toPush = '}';
         break;
       case 'array':
-        buffer.push('[');
+        toPush = '['
         break;
       case 'end-array':
-        buffer.push(']');
+        toPush = ']'
         break;
       default:
-        buffer.push(JSON.stringify(current.value))
+        toPush = JSON.stringify(current.value);
         break
     }
+    shouldPush = stringify.push(toPush);
+    current = iterator();
   }
-  stringify.push(buffer.join(''));
   if(!current) stringify.push();
 }
