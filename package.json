@@ -1,6 +1,6 @@
 {
   "name": "stream-json-stringify",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "JSON.stringify, streaming, non-blocking, for real this time.",
   "main": "index.js",
   "scripts": {
