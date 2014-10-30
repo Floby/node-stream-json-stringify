@@ -24,6 +24,7 @@ describe('stringify', function () {
     describe('containing one key', compares({a: 'a'}))
     describe('containing several keys', compares({a: 'AAA', b: 8, c: true}));
     describe('containing another object empty', compares({a: null, b: {}}));
+    describe('nesting 3 levels of objects', compares({a: {b: {c: 8}, d: 'hello'}}));
   })
 });
 
