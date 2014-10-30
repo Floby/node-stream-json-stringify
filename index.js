@@ -48,7 +48,7 @@ function read (size) {
         --state.nested;
         break;
       case 'array':
-        toPush = commaIfNeeded(state) + '[';
+        toPush = commaIfNeeded(state) + keyIfNeeded(state, current) + '[';
         ++state.nested;
         state.first[state.nested] = true;
         break;
