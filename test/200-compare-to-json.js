@@ -16,6 +16,7 @@ describe('stringify', function () {
   describe('given an array', function () {
     describe('with numbers', compares([1, 2, 3]))
     describe('with strings', compares(['a', 'b', 'c']))
+    describe('with mixed scalar values', compares([true, null, 'ABCD', 89]))
   });
 });
 
