@@ -10,6 +10,8 @@ describe('stringify', function () {
   describe('given a string', compares('Hello World'));
   describe('given true', compares(true));
   describe('given false', compares(false));
+
+  describe('given an empty object', compares({}))
 });
 
 

@@ -14,6 +14,8 @@ function Stringify (subject) {
     throw new Error('no object to stringify');
   }
 
+  this.state = 'start';
+
   if(subject && subject.toJSON) subject = subject.toJSON();
   this.iterator = iterator(subject);
 
@@ -23,6 +25,13 @@ function Stringify (subject) {
 function read (size) {
   var stringify = this;
   var iterator = stringify.iterator;
-  stringify.push(JSON.stringify(iterator().value));
+  var state = stringify.state;
+  var current = iterator();
+  if(current.type === 'object') {
+    stringify.push(JSON.stringify({}));
+  }
+  else {
+    stringify.push(JSON.stringify(current.value));
+  }
   stringify.push();
 }
