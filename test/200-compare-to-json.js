@@ -12,6 +12,7 @@ describe('stringify', function () {
   describe('given false', compares(false));
 
   describe('given an empty object', compares({}))
+  describe('given an empty array', compares({}))
 });
 
 
