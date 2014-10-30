@@ -54,7 +54,7 @@ function read (size) {
         --state.nested;
         break;
       default:
-        toPush = commaIfNeeded(state) + JSON.stringify(current.value);
+        toPush = commaIfNeeded(state) + keyIfNeeded(state, current) + JSON.stringify(current.value);
         break
     }
     length += toPush.length;
@@ -73,4 +73,11 @@ function commaIfNeeded (state) {
   }
   state.first[state.nested] = false;
   return toReturn;
+}
+
+function keyIfNeeded (state, current) {
+  if(typeof current.key === 'string') {
+    return JSON.stringify(current.key) + ':'
+  }
+  return '';
 }

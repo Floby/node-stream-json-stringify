@@ -11,7 +11,6 @@ describe('stringify', function () {
   describe('given true', compares(true));
   describe('given false', compares(false));
 
-  describe('given an empty object', compares({}))
   describe('given an empty array', compares({}))
   describe('given an array', function () {
     describe('with numbers', compares([1, 2, 3]))
@@ -19,6 +18,10 @@ describe('stringify', function () {
     describe('with mixed scalar values', compares([true, null, 'ABCD', 89]))
     describe('containing another array', compares([true, [], 2]))
   });
+  describe('given an empty object', compares({}))
+  describe('given an object', function () {
+    describe('containing one key', compares({a: 'a'}))
+  })
 });
 
 
