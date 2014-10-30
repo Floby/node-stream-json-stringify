@@ -39,10 +39,13 @@ function read (size) {
     toPush = null;
     switch(current.type) {
       case 'object':
-        toPush = '{';
+        toPush = commaIfNeeded(state) + '{';
+        ++state.nested;
+        state.first[state.nested] = true;
         break;
       case 'end-object':
         toPush = '}';
+        --state.nested;
         break;
       case 'array':
         toPush = commaIfNeeded(state) + '[';
