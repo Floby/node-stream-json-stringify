@@ -11,7 +11,7 @@ describe('stringify', function () {
   describe('given true', compares(true));
   describe('given false', compares(false));
 
-  describe('given an empty array', compares({}))
+  describe('given an empty array', compares([]))
   describe('given an array', function () {
     describe('with numbers', compares([1, 2, 3]))
     describe('with strings', compares(['a', 'b', 'c']))
@@ -44,10 +44,9 @@ describe('stringify', function () {
 function compares (subject) {
   var json = JSON.stringify(subject);
   return function describe () {
-    it('behaves the same as JSON.stringify', function (done) {
-      stringify(subject).pipe(sink()).on('data', function(data) {
+    it('behaves the same as JSON.stringify', function () {
+      return stringify(subject).pipe(sink()).then(function(data) {
         expect(data).to.equal(json);
-        done();
       });
     });
   }

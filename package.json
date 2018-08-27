@@ -28,14 +28,20 @@
   },
   "homepage": "https://github.com/Floby/node-stream-json-stringify",
   "devDependencies": {
-    "chai": "^1.9.2",
-    "istanbul": "^0.3.2",
-    "mocha": "^2.0.1",
+    "blocked": "^1.2.1",
+    "blocked-at": "^1.1.2",
+    "chai": "^4.1.2",
+    "delay": "^3.1.0",
+    "istanbul": "^0.4.5",
+    "microtime": "^2.1.8",
+    "mocha": "^5.2.0",
     "sinon": "^1.11.1",
-    "stream-sink": "^1.2.0"
+    "stackup": "^1.0.2",
+    "stream-blackhole": "^1.0.3",
+    "stream-sink": "^2.2.2"
   },
   "dependencies": {
     "json-stringify-safe": "^5.0.0",
-    "object-iterator": "^0.2.1"
+    "object-iterator": "^1.0.1"
   }
 }

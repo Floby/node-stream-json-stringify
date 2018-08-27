@@ -1,88 +1,93 @@
+const microtime = require('microtime')
 var stream = require('stream');
 var util = require('util');
-var iterator = require('object-iterator');
+var ObjectIterator = require('object-iterator');
 
 module.exports = Stringify
 
-util.inherits(Stringify, stream.Readable);
-function Stringify (subject) {
-  if(!(this instanceof Stringify)) return new Stringify(subject);
-  this._maxTicks = 50;
+const MAX_TICKS = 100
 
-  stream.Readable.call(this);
+util.inherits(Stringify, stream.Readable);
+function Stringify (subject, options) {
+  if(!(this instanceof Stringify)) return new Stringify(subject, options);
+
+  stream.Readable.call(this, options);
 
   if (typeof subject === 'undefined') {
     throw new Error('no object to stringify');
   }
-  this.state = {
-    nested: 0,
-    first: {}
-  }
 
   if(subject && subject.toJSON) subject = subject.toJSON();
-  this.iterator = iterator(subject);
+  const serializer = serialize(subject)
 
-  this._read = read;
+  this._read = (size) => {
+    const start = microtime.now()
+    let next
+    let length = 0
+    let ticks = 0
+    while (!next || !next.done) {
+      ticks++
+      next = serializer.next()
+      if (!next.done) {
+        length += next.value.length
+        const overrun = !this.push(next.value)
+        if (length >= size || overrun) {
+          break
+        }
+      }
+      if (ticks >= MAX_TICKS) break;
+    }
+    if (next.done) {
+      this.push(null)
+    }
+    const end = microtime.now()
+    //console.log('duration', end - start)
+  }
 }
 
-function read (size) {
-  var stringify = this;
-  var iterator = stringify.iterator;
-  var state = stringify.state;
-  var shouldPush, toPush, current;
-  var length = 0;
-  var ticksLeft = this._maxTicks;
-  
-  current = iterator();
-  shouldPush = true;
-  while (shouldPush && current) {
-    toPush = null;
-    switch(current.type) {
+function* serialize (source) {
+  const indentation = []
+  for (let token of ObjectIterator(source)) {
+    switch (token.type) {
       case 'object':
-        toPush = commaIfNeeded(state) + keyIfNeeded(state, current) + '{';
-        ++state.nested;
-        state.first[state.nested] = true;
+        yield* commaIfNeeded(indentation)
+        yield* keyIfNeeded(token)
+        indentation.unshift(true)
+        yield '{'
         break;
       case 'end-object':
-        toPush = '}';
-        --state.nested;
-        break;
-      case 'array':
-        toPush = commaIfNeeded(state) + keyIfNeeded(state, current) + '[';
-        ++state.nested;
-        state.first[state.nested] = true;
-        break;
-      case 'end-array':
-        toPush = ']'
-        --state.nested;
-        break;
-      case 'function':
-        current = iterator(); continue;
-      default:
-        toPush = commaIfNeeded(state) + keyIfNeeded(state, current) + JSON.stringify(current.value);
+        yield '}'
+        indentation.shift()
         break
+      case 'array':
+        yield* commaIfNeeded(indentation)
+        yield* keyIfNeeded(token)
+        indentation.unshift(true)
+        yield '['
+        break
+      case 'end-array':
+        yield ']'
+        indentation.shift()
+        break
+      case 'function':
+        break
+      default:
+        yield* commaIfNeeded(indentation)
+        yield* keyIfNeeded(token)
+        yield JSON.stringify(token.value)
     }
-    length += toPush.length;
-    shouldPush = stringify.push(toPush);
-    shouldPush = shouldPush && (length < size);
-    if(--ticksLeft === 0) break;
-    current = iterator();
   }
-  if(!current) stringify.push();
-}
 
-function commaIfNeeded (state) {
-  var toReturn = '';
-  if(state.nested && !state.first[state.nested]) {
-    toReturn = ',';
+  function* commaIfNeeded (indentation) {
+    if (indentation.length && !indentation[0]) {
+      yield ','
+    }
+    indentation[0] = false
   }
-  state.first[state.nested] = false;
-  return toReturn;
-}
 
-function keyIfNeeded (state, current) {
-  if(typeof current.key === 'string') {
-    return JSON.stringify(current.key) + ':'
+  function* keyIfNeeded (token) {
+    if (typeof token.key === 'string') {
+      yield JSON.stringify(token.key) + ':'
+    }
   }
-  return '';
 }
