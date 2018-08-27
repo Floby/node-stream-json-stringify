@@ -10,6 +10,8 @@ const MAX_TICKS = 100
 util.inherits(Stringify, stream.Readable)
 function Stringify (subject, options) {
   if (!(this instanceof Stringify)) return new Stringify(subject, options)
+  options = options || {}
+  const maxTicks = options.maxIterationTicks || MAX_TICKS
 
   stream.Readable.call(this, options)
 
@@ -32,7 +34,7 @@ function Stringify (subject, options) {
           break
         }
       }
-      if (ticks >= MAX_TICKS) break
+      if (ticks >= maxTicks) break
     }
     if (next.done) {
       this.push(null)

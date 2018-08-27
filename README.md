@@ -8,6 +8,10 @@ node-stream-json-stringify
 JSON.stringify, exactly, except it doesn't block on big objects and returns
 a readable stream
 
+To be clear, this implementation is way slower than the native JSON.stringify.
+However, it makes a specific effort not to block the event loop which can be useful
+for large payloads
+
 Installation
 ------------
 
@@ -21,6 +25,17 @@ var stringify = require('stream-json-stringify');
 
 stringify(myBigObject).pipe(process.stdout);
 ```
+
+As stringify is a readable stream, you can configure it
+by passing options to it.
+
+```
+stringify(someObject, { highWaterMark: 2048 })
+```
+
+It also accepts a `maxIterationTicks` as an option to limit the maximum
+number of times it is going to look for the next token to serialize during
+a given loop. It defaults to 100.
 
 Test
 ----
@@ -38,7 +53,7 @@ License
 
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2014 Florent Jaby
+Copyright (c) 2018 Florent Jaby
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
