@@ -1,10 +1,7 @@
-const delay = require('delay')
-const blocked = require('blocked-at')
-var sink = require('stream-sink');
+var sink = require('stream-sink')
 var expect = require('chai').expect
-const PassThrough = require('stream').PassThrough
 
-var stringify = require('..');
+var stringify = require('..')
 
 describe('When overrunning the high watermark', () => {
   it('behaves the same as JSON.stringify', () => {

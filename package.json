@@ -4,6 +4,7 @@
   "description": "JSON.stringify, streaming, non-blocking, for real this time.",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
     "test": "istanbul cover --print detail _mocha -- -R spec test",
     "coveralls": "cat coverage/lcov.info | coveralls"
   },
@@ -28,16 +29,16 @@
   },
   "homepage": "https://github.com/Floby/node-stream-json-stringify",
   "devDependencies": {
-    "blocked": "^1.2.1",
-    "blocked-at": "^1.1.2",
     "chai": "^4.1.2",
-    "delay": "^3.1.0",
+    "eslint": "^5.4.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-standard": "^3.1.0",
     "istanbul": "^0.4.5",
-    "microtime": "^2.1.8",
     "mocha": "^5.2.0",
     "sinon": "^1.11.1",
-    "stackup": "^1.0.2",
-    "stream-blackhole": "^1.0.3",
     "stream-sink": "^2.2.2"
   },
   "dependencies": {

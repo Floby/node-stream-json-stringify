@@ -1,10 +1,10 @@
-var expect = require('chai').expect;
+var expect = require('chai').expect
 
 describe('stringify', function () {
   it('is requirable', function () {
-    require('..');
+    require('..')
   })
   it('is a function', function () {
-    expect(require('..')).to.be.a('function');
-  });
+    expect(require('..')).to.be.a('function')
+  })
 })
